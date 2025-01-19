@@ -6,19 +6,32 @@
     </v-app-bar>
     <v-main>
       <!--  -->
+      <p style="color: 'white'">{{ settingsOptions }}</p>
     </v-main>
-    <v-navigation-drawer v-model="drawer" location="right"></v-navigation-drawer>
+    <v-navigation-drawer v-model="drawer" location="right">
+      <ApplicationSettings></ApplicationSettings>
+    </v-navigation-drawer>
   </v-app>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const drawer = ref(null)
-</script>
-
 <script>
+import ApplicationSettings from './components/ApplicationSettings.vue'
 export default {
-  data: () => ({ drawer: null })
+  components: {
+    ApplicationSettings
+  },
+  data() {
+    return {
+      settingsOptions: {},
+      drawer: null
+    }
+  },
+  async mounted() {
+    try {
+      const response = await window.api.settings.settingOptions()
+      this.settingsOptions = response
+    } catch (error) {
+      console.error('Error fetching settings:', error)
+    }
+  }
 }
 </script>
