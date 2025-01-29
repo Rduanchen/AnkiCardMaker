@@ -1,10 +1,8 @@
-const axios = require('axios')
-const { Blob } = require('buffer')
+import axios from 'axios'
 
 export default abstract class VoiceDownload {
   volcabulary: string
   link: string
-  private dictionaryUrl: string
   constructor(volcabulary: string) {
     this.volcabulary = volcabulary
     this.link = this.makeDownloadLink()
@@ -24,26 +22,27 @@ export default abstract class VoiceDownload {
 
       console.log('MP3 has been successfully downloaded and converted to Blob')
       return mp3Blob
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error downloading or converting MP3:', error.message)
       throw error
     }
   }
 }
 
-class YahooVoiceDownload extends VoiceDownload {
-  makeDownloadLink() {
-    return `https://s.yimg.com/bg/dict/dreye/live/m/${this.volcabulary}.mp3`
+if (require.main === module) {
+  class YahooVoiceDownload extends VoiceDownload {
+    makeDownloadLink() {
+      return `https://s.yimg.com/bg/dict/dreye/live/m/${this.volcabulary}.mp3`
+    }
   }
+  let voiceDownload = new YahooVoiceDownload('hello')
+  // 下載 MP3 文件到資料夾中
+  voiceDownload
+    .downloadVoice()
+    .then(() => {
+      console.log('MP3 has been successfully downloaded and converted to Blob')
+    })
+    .catch((error) => {
+      console.error('Error downloading or converting MP3:', error.message)
+    })
 }
-
-let voiceDownload = new YahooVoiceDownload('hello')
-// 下載 MP3 文件到資料夾中
-voiceDownload
-  .downloadVoice()
-  .then((mp3Blob) => {
-    console.log('MP3 has been successfully downloaded and converted to Blob')
-  })
-  .catch((error) => {
-    console.error('Error downloading or converting MP3:', error.message)
-  })
