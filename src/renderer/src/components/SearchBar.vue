@@ -11,9 +11,10 @@
       ></v-autocomplete>
       <v-btn block @click="addToQue">加入貯列</v-btn>
       <v-textarea label="單字貯列" v-model="searchQue" auto-grow></v-textarea>
-      <v-btn class="mt-2" type="submit" block>送出查詢</v-btn>
+      <v-btn class="mt-2" type="submit" @click="sendRequest" block>送出查詢</v-btn>
     </v-form>
     <p>{{ searchQuery }}</p>
+    <p>{{ result }}</p>
   </v-sheet>
 </template>
 
@@ -26,7 +27,8 @@ export default {
       searchQuery: '',
       autoCompleteContent: [],
       searchQue: ``,
-      selectedItem: null
+      selectedItem: null,
+      result: null
     }
   },
   created() {
@@ -59,6 +61,16 @@ export default {
         this.selectedItem = null // 清空選定項目
         this.autoCompleteContent = [] // 清空建議內容
         this.searchQuery = '' // 清空輸入框
+      }
+    },
+    sendRequest() {
+      let wordArray = this.searchQue.split('\n').filter((item) => item.trim() !== '')
+      try {
+        const response = window.api.dictionary.search(wordArray)
+        this.result = response
+        this.$emit('update-search', response)
+      } catch (error) {
+        console.error('Error fetching search content:', error)
       }
     }
   }
