@@ -6,8 +6,6 @@ import {
   CardSection,
   CardSimple
 } from '../modals/clawer-base'
-require('axios')
-require('cheerio')
 
 let yahooBaseUrl = `https://tw.dictionary.yahoo.com/dictionary?p=`
 

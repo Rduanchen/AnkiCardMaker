@@ -6,8 +6,8 @@ import {
   CardSection,
   CardSimple
 } from '../modals/clawer-base'
-require('axios')
-require('cheerio')
+// require('axios')
+// require('cheerio')
 
 let cambridgeBaseUrl = `https://dictionary.cambridge.org/dictionary/english-chinese-traditional/`
 

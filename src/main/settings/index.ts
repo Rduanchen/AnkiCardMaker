@@ -1,4 +1,5 @@
-const { ipcMain } = require('electron')
+// const { ipcMain } = require('electron')
+import { ipcMain } from 'electron'
 const Settings = import('./setting-modal')
 import settingsOption from './dictionary-settings'
 
