@@ -16,7 +16,9 @@ export default class DictionaryFunctions {
       return await this.autoComplete(word)
     })
     ipcMain.handle('dictionary:search', async (_event, words: string[]) => {
-      return await this.dictionarySearch(words)
+      const res = await this.dictionarySearch(words)
+      console.log('res', res)
+      return res
     })
   }
   private autoComplete(word: string) {
@@ -24,8 +26,10 @@ export default class DictionaryFunctions {
   }
   private async dictionarySearch(words: string[]) {
     let allRequests = words.map((word) => {
-      return limit(() => {
-        return new CambridgeClawer(word).getCardSimple()
+      return limit(async () => {
+        let clawer = new CambridgeClawer(word)
+        await clawer.initialize()
+        return clawer.getCardSection()
       })
     })
     return await Promise.all(allRequests)
