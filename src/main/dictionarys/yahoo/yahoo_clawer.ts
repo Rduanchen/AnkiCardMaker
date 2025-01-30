@@ -25,7 +25,7 @@ class YahooClawer extends VocabularyClawerBase {
     }
     return result
   }
-  getDefination(): string[] {
+  getDefinition(): string[] {
     return ['']
   }
   getKK(): KK {
@@ -95,7 +95,7 @@ class YahooClawer extends VocabularyClawerBase {
               translation: sentence.match(/[\u4e00-\u9fff]+/g)?.join('') || ''
             }
           ]
-          sectionData.defination = null
+          sectionData.definition = null
           console.log(sectionData)
           sectionsData.push(sectionData)
         }
@@ -106,7 +106,7 @@ class YahooClawer extends VocabularyClawerBase {
   getCardSimple(): CardSimple {
     let cardSimple = {} as CardSimple
     cardSimple.volcabulary = this.searchVol
-    cardSimple.defination = this.getDefination()
+    cardSimple.definition = this.getDefinition()
     cardSimple.example = this.getExampleSentences()
     cardSimple.translation = this.getTraslation()
     cardSimple.kk = this.getKK()
