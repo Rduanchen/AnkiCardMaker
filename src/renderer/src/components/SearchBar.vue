@@ -14,12 +14,15 @@
       <v-btn class="mt-2" type="submit" @click="sendRequest" block>送出查詢</v-btn>
     </v-form>
     <p>{{ searchQuery }}</p>
-    <p>{{ result }}</p>
+    <p>{{ this.searchResult }}</p>
   </v-sheet>
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
+import { mainStore } from '../store/main'
+import { mapWritableState } from 'pinia'
+import emitter from '../mitt'
 export default {
   name: 'SearchBar',
   data() {
@@ -27,9 +30,11 @@ export default {
       searchQuery: '',
       autoCompleteContent: [],
       searchQue: ``,
-      selectedItem: null,
-      result: null
+      selectedItem: null
     }
+  },
+  computed: {
+    ...mapWritableState(mainStore, ['searchResult'])
   },
   created() {
     // 使用 debounce 包裝 API 請求函數
@@ -67,8 +72,8 @@ export default {
       let wordArray = this.searchQue.split('\n').filter((item) => item.trim() !== '')
       try {
         const response = window.api.dictionary.search(wordArray)
-        this.result = response
-        this.$emit('update-search', response)
+        this.searchResult = response
+        emitter.emit('searchResult', response)
       } catch (error) {
         console.error('Error fetching search content:', error)
       }
