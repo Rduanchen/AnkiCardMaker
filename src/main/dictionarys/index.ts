@@ -29,7 +29,7 @@ export default class DictionaryFunctions {
       return limit(async () => {
         let clawer = new CambridgeClawer(word)
         await clawer.initialize()
-        return clawer.getCardSection()
+        return clawer.getCard()
       })
     })
     return await Promise.all(allRequests)
