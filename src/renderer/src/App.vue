@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="main">
     <v-app-bar>
       <v-app-bar-title>Rduan Anki Maker</v-app-bar-title>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -10,7 +10,9 @@
           <v-col cols="3">
             <SearchBar></SearchBar>
           </v-col>
-          <v-col cols="9"></v-col>
+          <v-col cols="9">
+            <SearchResultDisplay></SearchResultDisplay>
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -22,10 +24,12 @@
 <script>
 import ApplicationSettings from './components/ApplicationSettings.vue'
 import SearchBar from './components/SearchBar.vue'
+import SearchResultDisplay from './components/SearchResultDisplay.vue'
 export default {
   components: {
     ApplicationSettings,
-    SearchBar
+    SearchBar,
+    SearchResultDisplay
   },
   data() {
     return {
