@@ -57,13 +57,17 @@ class CambridgeClawer extends VocabularyClawerBase {
   }
   //FIXME: 無法取得連結
   getVoiceUrl(): Voices {
-    const voices = this.resultBody('audio.source')
-    let result: Voices = {
-      uk: voices.eq(0).attr('src'),
-      us: voices.eq(1).attr('src')
+    const audioLinks: string[] = []
+    this.resultBody('audio source[type="audio/mpeg"]').each((_, element) => {
+      const mp3Link = this.resultBody(element).attr('src')
+      if (mp3Link) {
+        audioLinks.push(`https://dictionary.cambridge.org${mp3Link}`)
+      }
+    })
+    return {
+      uk: audioLinks[0] || null,
+      us: audioLinks[1] || null
     }
-    console.log(result)
-    return result
   }
   getExampleSentences(): ExampleSentence[] {
     const examples = this.resultBody('.examp.dexamp')
