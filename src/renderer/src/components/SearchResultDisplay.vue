@@ -9,10 +9,13 @@
       <v-card-text class="bg-surface-light pt-2">
         <v-row class="kk-pronounce my-2" no-gutters>
           <v-col cols="12" sm="6" class="d-flex flex-row align-center justify-start">
-            <v-btn v-if="item.audioURL" icon="mdi-volume-medium" size="x-small" @click="playAudio">
+            <v-btn v-if="item.audioURL.uk" icon="mdi-volume-medium" size="x-small" @click="playAudio(item.audioURL.uk)">
               <v-icon>mdi-volume-medium</v-icon>
             </v-btn>
             <p v-if="item.kk.uk" class="text-caption">UK: {{ item.kk.uk }}</p>
+            <v-btn v-if="item.audioURL.us" icon="mdi-volume-medium" size="x-small" @click="playAudio(item.audioURL.us)">
+              <v-icon>mdi-volume-medium</v-icon>
+            </v-btn>
             <p v-if="item.kk.us" class="text-caption">US: {{ item.kk.us }}</p>
             <p v-if="item.kk.dj" class="text-caption">DJ: {{ item.kk.dj }}</p>
           </v-col>
