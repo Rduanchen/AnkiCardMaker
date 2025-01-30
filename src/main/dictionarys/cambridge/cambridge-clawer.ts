@@ -4,7 +4,9 @@ import {
   ExampleSentence,
   TypeTranslatePair,
   CardSection,
-  CardSimple
+  CardSimple,
+  CardFullInfo,
+  Voices
 } from '../modals/clawer-base'
 // require('axios')
 // require('cheerio')
@@ -31,11 +33,11 @@ class CambridgeClawer extends VocabularyClawerBase {
     }
     return result
   }
-  getDefination(): string[] {
-    const defination = this.resultBody('.ddef_h')
+  getDefinition(): string[] {
+    const definition = this.resultBody('.ddef_h')
     let result: any = []
-    for (let i = 0; i < defination.length; i++) {
-      const defs = defination.eq(i).find('.def.ddef_d.db')
+    for (let i = 0; i < definition.length; i++) {
+      const defs = definition.eq(i).find('.def.ddef_d.db')
       let str = ''
       for (let j = 0; j < defs.length; j++) {
         str += defs.eq(j).text()
@@ -45,12 +47,22 @@ class CambridgeClawer extends VocabularyClawerBase {
     return result
   }
   getKK(): KK {
-    let kks = this.resultBody.find('.pos-header.dpos-h').eq(0).find('.pron.dpron')
+    let kks = this.resultBody('.pos-header.dpos-h').eq(0).find('.pron.dpron')
     let result: KK = {
       uk: kks.eq(0).text(),
       us: kks.eq(1).text(),
       dj: null
     }
+    return result
+  }
+  //FIXME: 無法取得連結
+  getVoiceUrl(): Voices {
+    const voices = this.resultBody('audio.source')
+    let result: Voices = {
+      uk: voices.eq(0).attr('src'),
+      us: voices.eq(1).attr('src')
+    }
+    console.log(result)
     return result
   }
   getExampleSentences(): ExampleSentence[] {
@@ -103,7 +115,7 @@ class CambridgeClawer extends VocabularyClawerBase {
         let sectionData = {} as CardSection
         sectionData.type = type
         sectionData.translation = sectionBody.find('.trans.dtrans.dtrans-se.break-cj').text()
-        sectionData.defination = sectionBody.find('.def.ddef_d.db').text()
+        sectionData.definition = sectionBody.find('.def.ddef_d.db').text()
         let examples = sectionBody.find('.examp.dexamp')
         let exampleList: ExampleSentence[] = []
         for (let k = 0; k < examples.length; k++) {
@@ -123,11 +135,20 @@ class CambridgeClawer extends VocabularyClawerBase {
       volcabulary: this.searchVol,
       kk: this.getKK(),
       audioURL: this.getVoiceUrl(),
-      defination: this.getDefination(),
+      definition: this.getDefinition(),
       example: this.getExampleSentences(),
       translation: this.getTraslation()
     }
     return cardSimple
+  }
+  getCard(): CardFullInfo {
+    let cardBasic: CardFullInfo = {
+      volcabulary: this.searchVol,
+      kk: this.getKK(),
+      audioURL: this.getVoiceUrl(),
+      sections: this.getCardSection()
+    }
+    return cardBasic
   }
 }
 export default CambridgeClawer
