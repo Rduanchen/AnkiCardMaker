@@ -9,12 +9,12 @@
         v-model="selectedItem"
         prepend-inner-icon="mdi-magnify"
       ></v-autocomplete>
-      <v-btn block @click="addToQue">加入貯列</v-btn>
+      <v-btn block color="secondary" elevation="2" @click="addToQue"> 加入貯列 </v-btn>
       <v-textarea label="單字貯列" v-model="searchQue" auto-grow></v-textarea>
-      <v-btn class="mt-2" type="submit" @click="sendRequest" block>送出查詢</v-btn>
+      <v-btn class="mt-2" type="submit" @click="sendRequest" block color="primary" elevation="2">
+        送出查詢
+      </v-btn>
     </v-form>
-    <p>{{ searchQuery }}</p>
-    <p>{{ this.searchResult }}</p>
   </v-sheet>
 </template>
 
