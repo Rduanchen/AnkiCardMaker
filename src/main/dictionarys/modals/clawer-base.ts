@@ -75,7 +75,6 @@ export default abstract class VocabularyClawerBase {
    */
   async initialize(): Promise<void> {
     await this.getHtmlBody()
-    console.log('Initialized')
   }
   private async getHtmlBody(): Promise<void> {
     try {
