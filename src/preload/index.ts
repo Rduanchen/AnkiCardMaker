@@ -3,11 +3,13 @@ import { electronAPI } from '@electron-toolkit/preload'
 import { ipcRenderer } from 'electron'
 import settingAPI from './settings'
 import dictionaryAPI from './dictionary'
+import exportAPI from './export'
 
 // Custom APIs for renderer
 const api = {
   settings: settingAPI,
-  dictionary: dictionaryAPI
+  dictionary: dictionaryAPI,
+  export: exportAPI
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
