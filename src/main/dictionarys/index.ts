@@ -17,7 +17,6 @@ export default class DictionaryFunctions {
     })
     ipcMain.handle('dictionary:search', async (_event, words: string[]) => {
       const res = await this.dictionarySearch(words)
-      console.log('res', res)
       return res
     })
   }
