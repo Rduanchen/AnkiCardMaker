@@ -1,6 +1,8 @@
 <template>
   <div class="search-result-display">
     <p>單字卡</p>
+    <v-btn @click="exportTest">輸出測試</v-btn>
+    <v-btn @click="exportAudioTest">音訊輸出測試</v-btn>
     <v-card class="mx-auto info-card my-4" block v-if="searchResult" v-for="(item, index) in this.translation"
       :key="index">
       <template v-slot:title>
@@ -60,6 +62,22 @@ export default {
     playAudio(url) {
       const audio = new Audio(url); // 建立音檔物件
       audio.play(); // 播放音檔
+    },
+    exportTest() {
+      try {
+        let sendData = JSON.stringify(this.translation)
+        window.api.export.exportCard(sendData).then((result) => {
+          console.log('Export result:', result)  // 確認回傳結果
+        })
+      } catch (error) {
+        console.error('Error exporting card:', error)
+      }
+    },
+    exportAudioTest() {
+      let sendData = JSON.stringify(this.translation)
+      window.api.export.exportSound(sendData).then((result) => {
+        console.log('Export result:', result)  // 確認回傳結果
+      })
     }
   },
   created() {
