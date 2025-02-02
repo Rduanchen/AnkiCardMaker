@@ -26,6 +26,7 @@
     "@electron-toolkit/utils": "^3.0.0",
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",
+    "electron-store": "^10.0.1",
     "electron-updater": "^6.1.7",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
