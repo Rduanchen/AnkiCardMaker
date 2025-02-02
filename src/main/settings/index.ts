@@ -1,17 +1,19 @@
-// const { ipcMain } = require('electron')
 import { ipcMain } from 'electron'
-const Settings = import('./setting-modal')
-import settingsOption from './dictionary-settings'
+import universalSettings from './universal-settings'
+import CambridgeSetting from '../dictionarys/cambridge/cambridge-setting'
 
 // Send the setting option to the renderer process.
-function settingSetup() {
-  ipcMain.handle('setting:get-options', async () => {
-    return settingsOption
-  })
-
-  ipcMain.handle('setting:get-setting-modal', async () => {
-    return Settings
-  })
+export default class SettingManager {
+  constructor() {
+    this.setup()
+  }
+  private setup() {
+    ipcMain.handle('setting:get-options', async () => {
+      let re: any = universalSettings
+      re.dictionaries = {
+        cambridge: CambridgeSetting
+      }
+      return re
+    })
+  }
 }
-
-export default settingSetup
