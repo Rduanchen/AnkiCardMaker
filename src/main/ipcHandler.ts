@@ -1,9 +1,9 @@
-import settingSetup from './settings/index'
+import SettingManager from './settings/index'
 import DictionaryFunctions from './dictionarys/index'
-import MakeAnkiCard from './make-anki-card'
+import MakeAnkiCard from './export'
 import { ipcMain } from 'electron'
 function setupAllIPC() {
-  settingSetup()
+  new SettingManager()
   new DictionaryFunctions()
   new MakeAnkiCard()
   ipcMain.handle('test', () => {
