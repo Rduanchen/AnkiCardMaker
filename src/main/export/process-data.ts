@@ -4,10 +4,10 @@ class ProcessCard {
   final: string = ''
   public processCard(body: any): string {
     this.final = ''
-    this.final += this.addFrontCard(body.volcabulary)
-    this.final += ankiHtml.addTitle(body.volcabulary)
+    this.final += this.addFrontCard(body.word)
+    this.final += ankiHtml.addTitle(body.word) // Back card title
     this.processKK(body.kk)
-    this.processAudioURL(body.audioURL)
+    this.processAudioURL(body.word)
     body.sections.forEach((section: any) => {
       this.final += this.processSection(section)
     })
@@ -18,7 +18,7 @@ class ProcessCard {
   }
   private processSection(section: any): string {
     let output = ''
-    output += this.addChip(section.type)
+    output += this.addChip(section.partOfSpeech)
     output += this.addChip(section.definition)
     output += ankiHtml.addText(section.translation)
     output += this.addChip('Definition')
@@ -33,10 +33,15 @@ class ProcessCard {
     return `${ankiHtml.addText(example.sentence)}<br>${ankiHtml.addText(example.translation)}`
   }
   private processKK(kk: any) {
-    return `${ankiHtml.addText(`UK: ${kk.uk}`)}   ${ankiHtml.addText(`US: ${kk.us}`)}`
+    let final = ''
+    kk.forEach((k: any) => {
+      final += `${k.name}: ${k.text}`
+    })
+    return `${ankiHtml.addText(final)}`
   }
+  //FIXME
   private processAudioURL(audioURL: any) {
-    return `${ankiHtml.addAudioTag(audioURL.uk)}   ${ankiHtml.addAudioTag(audioURL.us)}`
+    return `${ankiHtml.addAudioTag(audioURL)}` //FIXME
   }
   private addChip(name: string): string {
     return ankiHtml.addDiv(name, 'chip')
