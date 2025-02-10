@@ -42,9 +42,6 @@ export default {
     } catch (error) {
       console.error('Error fetching settings:', error)
     }
-  },
-  methods: {
-    choeseDictionary() {}
   }
 }
 </script>
