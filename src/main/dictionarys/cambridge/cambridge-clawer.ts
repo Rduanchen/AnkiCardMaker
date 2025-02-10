@@ -1,15 +1,5 @@
-import VocabularyClawerBase from '../modals/clawer-base'
-import {
-  KK,
-  ExampleSentence,
-  TypeTranslatePair,
-  CardSection,
-  CardSimple,
-  CardFullInfo,
-  Voices
-} from '../modals/clawer-base'
-// require('axios')
-// require('cheerio')
+import VocabularyClawerBase, { Meaning } from '../modals/clawer-base'
+import { KK, ExampleSentence, Audio, WordDefination } from '../modals/clawer-base'
 
 let cambridgeBaseUrl = `https://dictionary.cambridge.org/dictionary/english-chinese-traditional/`
 
@@ -46,17 +36,22 @@ class CambridgeClawer extends VocabularyClawerBase {
     }
     return result
   }
-  getKK(): KK {
+  getKK(): KK[] {
     let kks = this.resultBody('.pos-header.dpos-h').eq(0).find('.pron.dpron')
-    let result: KK = {
-      uk: kks.eq(0).text(),
-      us: kks.eq(1).text(),
-      dj: null
-    }
+    let result: KK[] = [
+      {
+        type: 'uk',
+        text: kks.eq(0).text()
+      },
+      {
+        type: 'us',
+        text: kks.eq(1).text()
+      }
+    ]
     return result
   }
   //FIXME: 無法取得連結
-  getVoiceUrl(): Voices {
+  getAudiosUrl(): Audio[] {
     const audioLinks: string[] = []
     this.resultBody('audio source[type="audio/mpeg"]').each((_, element) => {
       const mp3Link = this.resultBody(element).attr('src')
@@ -64,22 +59,27 @@ class CambridgeClawer extends VocabularyClawerBase {
         audioLinks.push(`https://dictionary.cambridge.org${mp3Link}`)
       }
     })
-    return {
-      uk: audioLinks[0] || null,
-      us: audioLinks[1] || null
-    }
-  }
-  getExampleSentences(): ExampleSentence[] {
-    const examples = this.resultBody('.examp.dexamp')
-    let result: ExampleSentence[] = []
-    for (let i = 0; i < examples.length; i++) {
-      let sentence: ExampleSentence = {
-        sentence: examples.eq(i).find('.eg.deg').text(),
-        translation: examples.eq(i).find('.trans.dtrans.dtrans-se.hdb.break-cj').text()
+    return [
+      {
+        name: 'uk',
+        url: audioLinks[0]
+      },
+      {
+        name: 'us',
+        url: audioLinks[1]
       }
-      result.push(sentence)
+    ]
+  }
+  getExampleSentences(content): ExampleSentence[] {
+    let examples = content.find('.examp.dexamp')
+    let exampleList: ExampleSentence[] = []
+    for (let k = 0; k < examples.length; k++) {
+      let sentence = {} as ExampleSentence
+      sentence.sentence = examples.eq(k).find('.eg.deg').text()
+      sentence.translation = examples.eq(k).find('.trans.dtrans.dtrans-se.hdb.break-cj').text()
+      exampleList.push(sentence)
     }
-    return result
+    return exampleList
   }
   getTypes(): string[] {
     const types = this.resultBody('.posgram.dpos-g.hdib.lmr-5')
@@ -93,64 +93,30 @@ class CambridgeClawer extends VocabularyClawerBase {
     }
     return result
   }
-  getTranslationTypesPair(): TypeTranslatePair[] {
-    const types = this.resultBody('.pr.entry-body__el')
-    let result: TypeTranslatePair[] = []
-    for (let i = 0; i < types.length; i++) {
-      let type = types.eq(i).find('.posgram.dpos-g.hdib.lmr-5').text()
-      let defs = types.eq(i).find('.def-body.ddef_b')
-      let tempDef: string[] = []
-      for (let j = 0; j < defs.length; j++) {
-        let def = defs.eq(j).find('.trans.dtrans.dtrans-se.break-cj').eq(0).text()
-        tempDef.push(def)
-      }
-      result.push({ type, translation: tempDef })
-    }
-    return result
-  }
-  getCardSection(): CardSection[] {
-    const volType = this.resultBody('.pr.entry-body__el')
-    let sections: CardSection[] = []
-    for (let i = 0; i < volType.length; i++) {
-      let type = volType.eq(i).find('.posgram.dpos-g.hdib.lmr-5').text()
-      let sectionsBody = volType.eq(i).find('.def-block.ddef_block')
+  getEachMeaning(): Meaning[] {
+    const volMeans = this.resultBody('.pr.entry-body__el')
+    let sections: Meaning[] = []
+    for (let i = 0; i < volMeans.length; i++) {
+      let partOfSpeech = volMeans.eq(i).find('.posgram.dpos-g.hdib.lmr-5').text()
+      let sectionsBody = volMeans.eq(i).find('.def-block.ddef_block')
       for (let j = 0; j < sectionsBody.length; j++) {
         let sectionBody = sectionsBody.eq(j)
-        let sectionData = {} as CardSection
-        sectionData.type = type
-        sectionData.translation = sectionBody.find('.trans.dtrans.dtrans-se.break-cj').text()
+        let sectionData = {} as Meaning
+        sectionData.partOfSpeech = partOfSpeech
+        sectionData.translation = sectionBody.find('.trans.dtrans.dtrans-se.break-cj').eq(0).text()
         sectionData.definition = sectionBody.find('.def.ddef_d.db').text()
-        let examples = sectionBody.find('.examp.dexamp')
-        let exampleList: ExampleSentence[] = []
-        for (let k = 0; k < examples.length; k++) {
-          let sentence = {} as ExampleSentence
-          sentence.sentence = examples.eq(k).find('.eg.deg').text()
-          sentence.translation = examples.eq(k).find('.trans.dtrans.dtrans-se.hdb.break-cj').text()
-          exampleList.push(sentence)
-        }
-        sectionData.example = exampleList
+        sectionData.example = this.getExampleSentences(sectionBody)
         sections.push(sectionData)
       }
     }
     return sections
   }
-  getCardSimple(): CardSimple {
-    let cardSimple: CardSimple = {
-      volcabulary: this.searchVol,
+  getDictionary(): WordDefination {
+    let cardBasic: WordDefination = {
+      word: this.searchVol,
       kk: this.getKK(),
-      audioURL: this.getVoiceUrl(),
-      definition: this.getDefinition(),
-      example: this.getExampleSentences(),
-      translation: this.getTraslation()
-    }
-    return cardSimple
-  }
-  getCard(): CardFullInfo {
-    let cardBasic: CardFullInfo = {
-      volcabulary: this.searchVol,
-      kk: this.getKK(),
-      audioURL: this.getVoiceUrl(),
-      sections: this.getCardSection()
+      audioURL: this.getAudiosUrl(),
+      meanings: this.getEachMeaning()
     }
     return cardBasic
   }
@@ -169,6 +135,6 @@ if (require.main === module) {
 
     // 初始化完成後再執行其他方法
     // console.log(cambridgeClawer.getCardSimple());
-    console.log(cambridgeClawer.getCardSection())
+    console.log(cambridgeClawer.getDictionary())
   })()
 }

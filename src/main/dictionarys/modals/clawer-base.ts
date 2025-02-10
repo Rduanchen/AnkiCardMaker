@@ -5,9 +5,27 @@ function emitError(message: any): never {
   throw new Error(message)
 }
 
-export interface TypeTranslatePair {
+export interface CardBase {
+  word: string
+  kk: KK[] | null
+  audioURL: Audio[] | null
+}
+
+export interface KK {
   type: string
-  translation: string[]
+  text: string
+}
+
+export interface Audio {
+  name: string
+  url: string
+}
+
+export interface Meaning {
+  partOfSpeech: string | null
+  translation: string | null
+  definition: string | null
+  example: ExampleSentence[] | null
 }
 
 export interface ExampleSentence {
@@ -15,38 +33,8 @@ export interface ExampleSentence {
   translation: string | null
 }
 
-export interface CardBasic {
-  volcabulary: string
-  kk: KK | null
-  audioURL: Voices | null | string
-}
-
-export interface CardSection {
-  type: string | null
-  translation: string | null
-  definition: string | null
-  example: ExampleSentence[] | null
-}
-
-export interface CardSimple extends CardBasic {
-  definition: string[] | null
-  example: ExampleSentence[] | null
-  translation: string[][] | null
-}
-
-export interface CardFullInfo extends CardBasic {
-  sections: CardSection[]
-}
-
-export interface KK {
-  uk: string | null
-  us: string | null
-  dj: string | null
-}
-
-export interface Voices {
-  uk: string | null
-  us: string | null
+export interface WordDefination extends CardBase {
+  meanings: Meaning[]
 }
 
 export default abstract class VocabularyClawerBase {
@@ -92,14 +80,13 @@ export default abstract class VocabularyClawerBase {
   }
   abstract getTraslation(): string[][] | string[]
   abstract getDefinition(): string[]
-  abstract getExampleSentences(): ExampleSentence[]
-  abstract getCardSection(): CardSection[]
-  abstract getCardSimple(): CardSimple
+  abstract getExampleSentences(content: any): ExampleSentence[]
+  abstract getEachMeaning(): Meaning[]
   abstract getTypes(): string[]
-  getKK(): KK {
+  getKK(): KK[] {
     emitError('Not implemented')
   }
-  getVoiceUrl(): Voices {
+  getAudiosUrl(): Audio[] {
     emitError('Not implemented')
   }
   getBody(): any {
