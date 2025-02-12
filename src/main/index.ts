@@ -3,16 +3,8 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import setupAllIPC from './ipcHandler'
-if (is.dev) {
-  try {
-    require('electron-reloader')(module, {
-      debug: true, // 開啟 debug 模式以查看訊息
-      watchRenderer: true // 同時監控前端變更
-    })
-  } catch (err) {
-    console.error('Error enabling hot reload for main process:', err)
-  }
-}
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({

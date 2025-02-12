@@ -123,7 +123,7 @@ class CambridgeClawer extends VocabularyClawerBase {
 }
 export default CambridgeClawer
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   ;(async () => {
     console.log('Cambridge Clawer')
 

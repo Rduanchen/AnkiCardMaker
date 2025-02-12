@@ -29,7 +29,7 @@ export default abstract class VoiceDownload {
   }
 }
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   class YahooVoiceDownload extends VoiceDownload {
     makeDownloadLink() {
       return `https://s.yimg.com/bg/dict/dreye/live/m/${this.volcabulary}.mp3`

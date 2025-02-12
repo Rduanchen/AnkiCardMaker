@@ -17,7 +17,7 @@ export class CambridgeAutoComplete extends AutoCompleteModal {
   }
 }
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   ;(async () => {
     let cambridgeAutoComplete = new CambridgeAutoComplete()
     let result = await cambridgeAutoComplete.getAutoComplete('hello')
