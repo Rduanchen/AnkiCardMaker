@@ -66,6 +66,13 @@ export default {
     changeDictionary() {
       this.translateSettings.systemSettings = {}
       this.translateSettings.dictionarySetting = {}
+    },
+    setSettings() {
+      window.api.settings.setSettings(this.translateSettings).then((result) => {
+        if (result) {
+          console.log('Settings saved:', result)
+        }
+      })
     }
   }
 }
