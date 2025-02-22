@@ -1,4 +1,4 @@
-import { NumberInput, SelectionInput, SectionTitle } from '../../settings/setting-modal'
+import { NumberInput, SelectionInput, SectionTitle } from '../../settings/setting-modal';
 
 const CAMBRIDGE_SETTING: (NumberInput | SelectionInput | SectionTitle)[] = [
   {
@@ -22,38 +22,44 @@ const CAMBRIDGE_SETTING: (NumberInput | SelectionInput | SectionTitle)[] = [
     name: 'kk音標',
     id: 'displayKK',
     type: 'selection',
-    selections: ['顯示', '不顯示']
+    selections: ['顯示', '不顯示'],
+    default: 0
   },
   {
     name: '音檔',
     id: 'displayAudio',
     type: 'selection',
-    selections: ['顯示', '不顯示']
+    selections: ['顯示', '不顯示'],
+    default: 0
   },
   {
     name: '英文定義',
     id: 'displayDefinition',
     type: 'selection',
-    selections: ['顯示', '不顯示']
+    selections: ['顯示', '不顯示'],
+    default: 0
   },
   {
     name: '中文翻譯',
     id: 'displayTranslation',
     type: 'selection',
-    selections: ['顯示', '不顯示']
+    selections: ['顯示', '不顯示'],
+    default: 0
   },
   {
     name: '造句',
     id: 'displayExample',
     type: 'selection',
-    selections: ['顯示', '不顯示']
+    selections: ['顯示', '不顯示'],
+    default: 0
   },
   {
     name: '例句翻譯',
     id: 'displayExampleTranslation',
     type: 'selection',
-    selections: ['顯示', '不顯示']
+    selections: ['顯示', '不顯示'],
+    default: 0
   }
-]
+];
 
-export default CAMBRIDGE_SETTING
+export default CAMBRIDGE_SETTING;
