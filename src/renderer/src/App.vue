@@ -33,18 +33,10 @@ export default {
   },
   data() {
     return {
-      settingsOptions: {},
       drawer: null
     }
   },
-  async mounted() {
-    try {
-      const response = await window.api.settings.settingOptions()
-      this.settingsOptions = response
-    } catch (error) {
-      console.error('Error fetching settings:', error)
-    }
-  }
+  async mounted() {}
 }
 </script>
 <style lang="scss" scoped>
