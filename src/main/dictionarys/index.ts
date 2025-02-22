@@ -14,10 +14,7 @@ export default class DictionaryFunctions {
   private setup() {
     console.log('DictionaryFunctions is ready')
     ipcMain.handle('dictionary:auto-complete', async (_event, word: string) => {
-      console.log('get auto complete')
-      let res = await this.autoComplete(word)
-      console.log('res', res)
-      return res
+      return await this.autoComplete(word)
     })
     ipcMain.handle('dictionary:search', async (_event, words: string[]) => {
       const res = await this.dictionarySearch(words)

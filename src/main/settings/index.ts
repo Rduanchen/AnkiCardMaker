@@ -3,19 +3,12 @@ import dictionarySelection from './universal-settings'
 import CambridgeSetting from '../dictionarys/cambridge/cambridge-setting'
 import { setDictionarySettings, setChoesenDictionary, setSystemSettings } from './store'
 
-interface SettingOptions {
-  dictionaryNames: typeof dictionarySelection
-  systemSettings: object
-  dictionaries: object
-}
 // Send the setting option to the renderer process.
 export default class SettingManager {
-  constructor() {
-    this.setup()
-  }
+  constructor() {}
   public setup() {
     ipcMain.handle('setting:get-options', async () => {
-      const settingsResponse: SettingOptions = {
+      const settingsResponse = {
         dictionaryNames: dictionarySelection,
         systemSettings: {},
         dictionaries: {
@@ -24,7 +17,7 @@ export default class SettingManager {
       }
       return settingsResponse
     })
-    ipcMain.handle('setting:set-options', async (_event, options: SettingOptions) => {
+    ipcMain.handle('setting:set-options', async (_event, options: any) => {
       try {
         console.log(options)
         setDictionarySettings(options.dictionaries)
