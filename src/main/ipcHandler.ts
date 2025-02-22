@@ -3,7 +3,7 @@ import DictionaryFunctions from './dictionarys/index'
 import MakeAnkiCard from './export'
 import { ipcMain } from 'electron'
 function setupAllIPC() {
-  new SettingManager()
+  new SettingManager().setup()
   new DictionaryFunctions()
   new MakeAnkiCard()
   ipcMain.handle('test', () => {

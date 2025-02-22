@@ -123,18 +123,18 @@ class CambridgeClawer extends VocabularyClawerBase {
 }
 export default CambridgeClawer
 
-if (import.meta.url === new URL(import.meta.url).href) {
-  ;(async () => {
-    console.log('Cambridge Clawer')
+// if (import.meta.url === new URL(import.meta.url).href) {
+//   ;(async () => {
+//     console.log('Cambridge Clawer')
 
-    let searchVol = 'hello'
-    let cambridgeClawer = new CambridgeClawer(searchVol)
+//     let searchVol = 'hello'
+//     let cambridgeClawer = new CambridgeClawer(searchVol)
 
-    // 等待初始化完成
-    await cambridgeClawer.initialize()
+//     // 等待初始化完成
+//     await cambridgeClawer.initialize()
 
-    // 初始化完成後再執行其他方法
-    // console.log(cambridgeClawer.getCardSimple());
-    console.log(cambridgeClawer.getDictionary())
-  })()
-}
+//     // 初始化完成後再執行其他方法
+//     // console.log(cambridgeClawer.getCardSimple());
+//     console.log(cambridgeClawer.getDictionary())
+//   })()
+// }

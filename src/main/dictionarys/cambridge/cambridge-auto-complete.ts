@@ -17,10 +17,10 @@ export class CambridgeAutoComplete extends AutoCompleteModal {
   }
 }
 
-if (import.meta.url === new URL(import.meta.url).href) {
-  ;(async () => {
-    let cambridgeAutoComplete = new CambridgeAutoComplete()
-    let result = await cambridgeAutoComplete.getAutoComplete('hello')
-    console.log(result)
-  })()
-}
+// if (import.meta.url === new URL(import.meta.url).href) {
+//   ;(async () => {
+//     let cambridgeAutoComplete = new CambridgeAutoComplete()
+//     let result = await cambridgeAutoComplete.getAutoComplete('hello')
+//     console.log(result)
+//   })()
+// }
