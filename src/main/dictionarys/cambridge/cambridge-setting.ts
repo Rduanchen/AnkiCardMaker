@@ -22,42 +22,96 @@ const CAMBRIDGE_SETTING: (NumberInput | SelectionInput | SectionTitle)[] = [
     name: 'kk音標',
     id: 'displayKK',
     type: 'selection',
-    selections: ['顯示', '不顯示'],
+    selections: [
+      {
+        name: '顯示',
+        value: true
+      },
+      {
+        name: '不顯示',
+        value: false
+      }
+    ],
     default: 0
   },
   {
     name: '音檔',
     id: 'displayAudio',
     type: 'selection',
-    selections: ['顯示', '不顯示'],
+    selections: [
+      {
+        name: '顯示',
+        value: true
+      },
+      {
+        name: '不顯示',
+        value: false
+      }
+    ],
     default: 0
   },
   {
     name: '英文定義',
     id: 'displayDefinition',
     type: 'selection',
-    selections: ['顯示', '不顯示'],
+    selections: [
+      {
+        name: '顯示',
+        value: true
+      },
+      {
+        name: '不顯示',
+        value: false
+      }
+    ],
     default: 0
   },
   {
     name: '中文翻譯',
     id: 'displayTranslation',
     type: 'selection',
-    selections: ['顯示', '不顯示'],
+    selections: [
+      {
+        name: '顯示',
+        value: true
+      },
+      {
+        name: '不顯示',
+        value: false
+      }
+    ],
     default: 0
   },
   {
     name: '造句',
     id: 'displayExample',
     type: 'selection',
-    selections: ['顯示', '不顯示'],
+    selections: [
+      {
+        name: '顯示',
+        value: true
+      },
+      {
+        name: '不顯示',
+        value: false
+      }
+    ],
     default: 0
   },
   {
     name: '例句翻譯',
     id: 'displayExampleTranslation',
     type: 'selection',
-    selections: ['顯示', '不顯示'],
+    selections: [
+      {
+        name: '顯示',
+        value: true
+      },
+      {
+        name: '不顯示',
+        value: false
+      }
+    ],
     default: 0
   }
 ];

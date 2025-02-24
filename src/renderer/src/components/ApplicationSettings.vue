@@ -13,6 +13,8 @@
           v-if="option.type === 'selection'"
           :label="option.name"
           :items="option.selections"
+          item-title="name"
+          item-value="value"
           v-model="translateSettings.dictionarySetting[option.id]"
           @update:modelValue="setSettings"
         ></v-select>
@@ -72,7 +74,7 @@ export default {
           dictionarySetting[index].default != undefined
         ) {
           this.translateSettings.dictionarySetting[dictionarySetting[index].id] =
-            dictionarySetting[index].selections[dictionarySetting[index].default];
+            dictionarySetting[index].selections[dictionarySetting[index].default].value;
         } else if (
           dictionarySetting[index].type == 'text' &&
           dictionarySetting[index].default != undefined
