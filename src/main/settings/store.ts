@@ -1,16 +1,47 @@
 import Store from 'electron-store';
-const store = new Store();
+const store: any = new Store(); // 擺爛中
 
 function setDictionarySettings(data: any) {
-  store.set('settings:dictionarySettings', data);
+  if (data === undefined) {
+    store.delete('settings:dictionarySettings');
+  } else {
+    store.set('settings:dictionarySettings', data);
+  }
 }
 
-function setChoesenDictionary(data: any) {
-  store.set('settings:choesenDictionary', data);
+function getDictionarySettings(): object {
+  return store.get('settings:dictionarySettings', {});
+}
+
+function setChosenDictionary(data: any) {
+  if (data === undefined) {
+    store.delete('settings:chosenDictionary');
+  } else {
+    store.set('settings:chosenDictionary', data);
+  }
+}
+
+function getChosenDictionary(): object {
+  return store.get('settings:chosenDictionary', '');
 }
 
 function setSystemSettings(data: any) {
-  store.set('settings:systemSettings', data);
+  if (data === undefined) {
+    store.delete('settings:systemSettings');
+  } else {
+    store.set('settings:systemSettings', data);
+  }
 }
 
-export { setDictionarySettings, setChoesenDictionary, setSystemSettings };
+function getSystemSettings(): object {
+  return store.get('settings:systemSettings', {});
+}
+
+export {
+  setDictionarySettings,
+  getDictionarySettings,
+  setChosenDictionary,
+  getChosenDictionary,
+  setSystemSettings,
+  getSystemSettings
+};
