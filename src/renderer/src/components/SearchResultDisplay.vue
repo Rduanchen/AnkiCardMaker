@@ -1,7 +1,6 @@
 <template>
   <div class="search-result-display">
     <p>單字卡</p>
-    {{ modifiedData }}
     <v-btn @click="exportCardtoAnki">輸出</v-btn>
     <v-btn @click="exportAudioTest">音訊輸出測試</v-btn>
     <template v-for="(item, index) in dictionaries" :key="index">
