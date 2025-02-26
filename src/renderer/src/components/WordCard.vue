@@ -20,7 +20,7 @@
             v-for="(section, index) in wordDictionary.meanings" :key="index">
                 <v-card-text class="d-flex flex-column align-start">
                     <v-chip v-if="section.partOfSpeech" class="py-1" label> {{ section.partOfSpeech }} </v-chip>
-                    <input v-if="section.translation" class="section-translation my-4" v-model="section.translation"></input>
+                    <input v-if="section.translation" class="section-translation my-4" v-model="section.translation" ></input>
                     <v-chip v-if="section.definition" class="py-1" label>Definition</v-chip>
                     <input v-if="section.definition" class="my-2" v-model="section.definition"></input>
                     <v-spacer></v-spacer>
@@ -38,16 +38,32 @@
 <script>
 export default {
   name: 'WordCard',
+  data() {
+    return {
+      wordDictionary: this.info
+    }
+  },
   props: {
-    wordDictionary: {
+    info: {
       type: Object,
       required: true
+    }
+  },
+  watch: {
+    info: {
+      handler() {
+        this.wordDictionary = this.info
+      },
+      deep: true
     }
   },
   methods: {
     playAudio(url) {
       const audio = new Audio(url)
       audio.play()
+    },
+    updateValue() {
+      this.$emit('dataChange', this.wordDictionary)
     }
   }
 }
