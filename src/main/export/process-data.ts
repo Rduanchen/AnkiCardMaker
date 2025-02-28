@@ -1,5 +1,5 @@
 import AnkiHtml from './anki-html';
-let ankiHtml = new AnkiHtml();
+const ankiHtml = new AnkiHtml();
 class ProcessCard {
   final: string = '';
   public processCard(body: any): string {
@@ -52,10 +52,10 @@ class ProcessCard {
 }
 
 export function exportCard(data: any) {
-  let processCard = new ProcessCard();
+  const processCard = new ProcessCard();
   let final = ankiHtml.getPrefix();
   data = JSON.parse(data);
-  for (let card of data) {
+  for (const card of data) {
     final += processCard.processCard(card);
     final += ankiHtml.nextVol();
   }
