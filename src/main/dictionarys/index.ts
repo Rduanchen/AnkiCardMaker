@@ -25,9 +25,9 @@ export default class DictionaryFunctions {
     return this.cambridgeAutoComplete.getAutoComplete(word);
   }
   private async dictionarySearch(words: string[]) {
-    let allRequests = words.map((word) => {
+    const allRequests = words.map((word) => {
       return limit(async () => {
-        let clawer = new CambridgeClawer(word, getDictionarySettings());
+        const clawer = new CambridgeClawer(word, getDictionarySettings());
         await clawer.initialize();
         return clawer.getDictionary();
       });
