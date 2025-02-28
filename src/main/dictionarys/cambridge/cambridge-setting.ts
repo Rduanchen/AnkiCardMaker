@@ -113,6 +113,22 @@ const CAMBRIDGE_SETTING: (NumberInput | SelectionInput | SectionTitle)[] = [
       }
     ],
     default: 0
+  },
+  {
+    name: '音檔口音選擇',
+    id: 'audioAccent',
+    type: 'selection',
+    selections: [
+      {
+        name: '英式',
+        value: 'uk'
+      },
+      {
+        name: '美式',
+        value: 'us'
+      }
+    ],
+    default: 1
   }
 ];
 
