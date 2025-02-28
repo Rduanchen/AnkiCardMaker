@@ -21,7 +21,7 @@ function setChosenDictionary(data: any) {
   }
 }
 
-function getChosenDictionary(): object {
+function getChosenDictionary(): string {
   return store.get('settings:chosenDictionary', '');
 }
 
