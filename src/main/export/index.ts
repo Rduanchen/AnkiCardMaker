@@ -3,6 +3,8 @@ import { exportCard } from './process-data';
 import { saveTextToFile, selectFolder } from '../tools/save-file';
 import { downloadMp3Files } from '../tools/to-mp3';
 import { voiceDownloadModel } from '../tools/to-mp3';
+import { generateVoiceDownloadModal } from '../dictionarys/cambridge/cambridge-clawer';
+import { getChosenDictionary, getDictionarySettings } from '../settings/store';
 
 export default class MakeAnkiCard {
   constructor() {
@@ -21,15 +23,14 @@ export default class MakeAnkiCard {
     return ['success'];
   }
   private async exportSound(data: string) {
-    let datas = JSON.parse(data);
+    const datas = JSON.parse(data);
     let downloadlist: voiceDownloadModel[] = [];
-    datas.forEach((item: any) => {
-      downloadlist.push({
-        url: item.audioURL.uk,
-        fileName: item.volcabulary
-      } as voiceDownloadModel);
-    });
-    let filePath = await selectFolder();
+    const dictionaryName = getChosenDictionary();
+    if (dictionaryName == 'cambridge') {
+      downloadlist = generateVoiceDownloadModal(datas, getDictionarySettings());
+    }
+    console.log(downloadlist);
+    const filePath = await selectFolder();
     if (filePath) {
       downloadMp3Files(downloadlist, filePath);
     } else {
