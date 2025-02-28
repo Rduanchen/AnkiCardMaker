@@ -1,17 +1,17 @@
 <template>
   <v-sheet class="mx-auto pa-4 search-bar">
-    <v-form @submit.prevent class="search-bar-form">
+    <v-form class="search-bar-form" @submit.prevent>
       <v-autocomplete
-        @keyup.enter="addToQue"
-        @update:search="handleSearchInput"
+        v-model="selectedItem"
         label="查詢單字"
         :items="autoCompleteContent"
-        v-model="selectedItem"
         prepend-inner-icon="mdi-magnify"
+        @keyup.enter="addToQue"
+        @update:search="handleSearchInput"
       ></v-autocomplete>
       <v-btn block color="secondary" elevation="2" @click="addToQue"> 加入貯列 </v-btn>
-      <v-textarea label="單字貯列" v-model="searchQue" auto-grow></v-textarea>
-      <v-btn class="mt-2" type="submit" @click="sendRequest" block color="primary" elevation="2">
+      <v-textarea v-model="searchQue" label="單字貯列" auto-grow></v-textarea>
+      <v-btn class="mt-2" type="submit" block color="primary" elevation="2" @click="sendRequest">
         送出查詢
       </v-btn>
     </v-form>
@@ -69,7 +69,7 @@ export default {
       }
     },
     sendRequest() {
-      let wordArray = this.searchQue.split('\n').filter((item) => item.trim() !== '');
+      const wordArray = this.searchQue.split('\n').filter((item) => item.trim() !== '');
       try {
         const response = window.api.dictionary.search(wordArray);
         this.searchResult = response;
