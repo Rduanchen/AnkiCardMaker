@@ -3,25 +3,27 @@
     <v-form class="d-flex flex-column">
       <p class="mb-3">翻譯設定</p>
       <v-select
+        v-model="dictionaryChange"
         :label="dictionariesNames.name"
         :items="dictionariesNames.selections"
-        v-model="dictionaryChange"
+        item-title="name"
+        item-value="value"
         @click="changeDictionary"
       ></v-select>
       <template v-for="option in dictionarySettings[onselectDictionary]">
         <v-select
           v-if="option.type === 'selection'"
+          v-model="translateSettings.dictionarySetting[option.id]"
           :label="option.name"
           :items="option.selections"
           item-title="name"
           item-value="value"
-          v-model="translateSettings.dictionarySetting[option.id]"
           @update:modelValue="setSettings"
         ></v-select>
         <v-text-field
           v-if="option.type === 'text'"
-          :label="option.name"
           v-model="translateSettings.dictionarySetting[option.id]"
+          :label="option.name"
           @update:modelValue="setSettings"
         ></v-text-field>
       </template>
@@ -56,18 +58,30 @@ export default {
   },
   async mounted() {
     try {
-      let response = await window.api.settings.settingOptions();
+      const response = await window.api.settings.settingOptions();
       this.dictionariesNames = response.dictionaryNames;
       this.systemSettings = response.systemSettings; //FIXME: 尚未實踐
       this.dictionarySettings = response.dictionaries;
+      this.setDictionaryDefaultName();
     } catch (error) {
       console.error('Error fetching settings:', error);
     }
   },
   methods: {
+    setDictionaryDefaultName() {
+      try {
+        this.translateSettings.dictionaryName =
+          this.dictionariesNames.selections[this.dictionariesNames.default].value;
+      } catch (error) {
+        console.warn('No default dictionary name:', error);
+        this.translateSettings.dictionaryName = this.dictionariesNames.selections[0];
+      }
+      this.onselectDictionary = this.translateSettings.dictionaryName.value;
+      this.changeDictionary();
+    },
     setSettingDefaultValues() {
-      let dictionarySetting = this.dictionarySettings[this.onselectDictionary];
-      for (let index in dictionarySetting) {
+      const dictionarySetting = this.dictionarySettings[this.onselectDictionary];
+      for (const index in dictionarySetting) {
         if (
           dictionarySetting[index].type == 'selection' &&
           dictionarySetting[index].selections != undefined &&
@@ -84,17 +98,19 @@ export default {
             dictionarySetting[index].default;
         }
       }
-      for (let systemSetting in this.systemSettings) {
+      for (const systemSetting in this.systemSettings) {
         if (systemSetting.id && systemSetting.default)
           this.translateSettings.systemSettings[systemSetting.id] = systemSetting.default;
       }
-      for (let dictionaryName in this.dictionariesNames) {
+      for (const dictionaryName in this.dictionariesNames) {
         if (dictionaryName.default) this.translateSettings.dictionaryName = dictionaryName;
       }
     },
     changeDictionary() {
       this.translateSettings.systemSettings = {};
       this.translateSettings.dictionarySetting = {};
+      this.setSettingDefaultValues();
+      this.setSettings();
     },
     setSettings() {
       const settingsData = JSON.parse(JSON.stringify(this.translateSettings));
