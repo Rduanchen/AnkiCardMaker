@@ -1,5 +1,5 @@
 /* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution')
+require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {
   extends: [
@@ -13,6 +13,6 @@ module.exports = {
   rules: {
     'vue/require-default-prop': 'off',
     'vue/multi-word-component-names': 'off',
-    'vue/v-on-event-hyphenation': ['never']
+    'vue/v-on-event-hyphenation': 0
   }
-}
+};
