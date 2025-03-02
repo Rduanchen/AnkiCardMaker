@@ -1,13 +1,18 @@
-import { SelectionInput } from './setting-modal'
+import { SelectionInput } from './setting-modal';
 
-let dictionarys = ['cambridge']
+const dictionarys = [
+  {
+    name: '劍橋字典',
+    value: 'cambridge'
+  }
+];
 
-let dictionarySelection = {
+const dictionarySelection = {
   name: '字典選擇',
   id: 'dictionaryChoice',
   type: 'selection',
   selections: dictionarys,
   default: 0
-} as SelectionInput
+} as SelectionInput;
 
-export default dictionarySelection
+export default dictionarySelection;
