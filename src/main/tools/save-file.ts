@@ -1,5 +1,5 @@
-import { dialog } from 'electron'
-import * as fs from 'fs'
+import { dialog } from 'electron';
+import * as fs from 'fs';
 
 /**
  * 將文字寫入檔案。
@@ -10,14 +10,14 @@ function writeFile(filePath: string, content: string): Promise<void> {
   return new Promise((resolve, reject) => {
     fs.writeFile(filePath, content, (err) => {
       if (err) {
-        console.error('An error occurred while saving the file:', err)
-        reject(err)
+        console.error('An error occurred while saving the file:', err);
+        reject(err);
       } else {
-        console.log('File saved successfully:', filePath)
-        resolve()
+        console.log('File saved successfully:', filePath);
+        resolve();
       }
-    })
-  })
+    });
+  });
 }
 
 /**
@@ -30,15 +30,15 @@ export async function saveTextToFile(text: string): Promise<void> {
       title: 'Save Text File',
       defaultPath: 'document.txt',
       filters: [{ name: 'Text Files', extensions: ['txt'] }]
-    })
+    });
 
     if (filePath) {
-      await writeFile(filePath, text)
+      await writeFile(filePath, text);
     } else {
-      console.log('File save canceled by the user.')
+      console.log('File save canceled by the user.');
     }
   } catch (error) {
-    console.error('Failed to save text to file:', error)
+    console.error('Failed to save text to file:', error);
   }
 }
 
@@ -50,16 +50,16 @@ export async function selectFolder(): Promise<string | null> {
   try {
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openDirectory']
-    })
+    });
 
     if (canceled) {
-      console.log('Folder selection canceled by the user.')
-      return null
+      console.log('Folder selection canceled by the user.');
+      return null;
     }
 
-    return filePaths[0]
+    return filePaths[0];
   } catch (error) {
-    console.error('Error selecting folder:', error)
-    return null
+    console.error('Error selecting folder:', error);
+    return null;
   }
 }

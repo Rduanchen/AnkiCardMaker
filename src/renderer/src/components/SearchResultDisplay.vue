@@ -8,7 +8,7 @@
         :info="item"
         @dataChange="
           (value) => {
-            this.updateTraslationData(index, value);
+            updateTraslationData(index, value);
           }
         "
       />
@@ -23,17 +23,23 @@ import WordCard from './WordCard.vue';
 import emitter from '../mitt';
 export default {
   name: 'SearchResultDisplay',
+  components: {
+    WordCard
+  },
   data() {
     return {
       dictionaries: null,
       modifiedData: undefined
     };
   },
-  components: {
-    WordCard
-  },
   computed: {
     ...mapWritableState(mainStore, ['searchResult'])
+  },
+  created() {
+    emitter.on('searchResult', async (data) => {
+      this.dictionaries = await data;
+      this.modifiedData = this.dictionaries;
+    });
   },
   methods: {
     updateTraslationData(index, value) {
@@ -41,7 +47,7 @@ export default {
     },
     exportCardtoAnki() {
       try {
-        let sendData = JSON.stringify(this.dictionaries);
+        const sendData = JSON.stringify(this.dictionaries);
         window.api.export.exportCard(sendData).then((result) => {
           console.log('Export result:', result); // 確認回傳結果
         });
@@ -50,17 +56,11 @@ export default {
       }
     },
     exportAudioTest() {
-      let sendData = JSON.stringify(this.dictionaries);
+      const sendData = JSON.stringify(this.dictionaries);
       window.api.export.exportSound(sendData).then((result) => {
         console.log('Export result:', result); // 確認回傳結果
       });
     }
-  },
-  created() {
-    emitter.on('searchResult', async (data) => {
-      this.dictionaries = await data;
-      this.modifiedData = this.dictionaries;
-    });
   }
 };
 </script>

@@ -22,9 +22,9 @@
   </v-app>
 </template>
 <script>
-import ApplicationSettings from './components/ApplicationSettings.vue'
-import SearchBar from './components/SearchBar.vue'
-import SearchResultDisplay from './components/SearchResultDisplay.vue'
+import ApplicationSettings from './components/ApplicationSettings.vue';
+import SearchBar from './components/SearchBar.vue';
+import SearchResultDisplay from './components/SearchResultDisplay.vue';
 export default {
   components: {
     ApplicationSettings,
@@ -34,10 +34,10 @@ export default {
   data() {
     return {
       drawer: null
-    }
+    };
   },
   async mounted() {}
-}
+};
 </script>
 <style lang="scss" scoped>
 .app-content {

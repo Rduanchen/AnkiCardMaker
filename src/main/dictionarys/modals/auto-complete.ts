@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export abstract class AutoCompleteModal {
-  protected settings: object
-  protected resultBody: any = null
+  protected settings: object;
+  protected resultBody: any = null;
 
   protected requestheader = {
     'User-Agent':
@@ -10,24 +10,24 @@ export abstract class AutoCompleteModal {
     'Accept-Language': 'en-US,en;q=0.9',
     Referer: 'https://www.google.com/',
     Connection: 'keep-alive'
-  }
+  };
 
   constructor(settings: object) {
-    this.settings = settings
+    this.settings = settings;
   }
-  abstract makeUrl(word: string): string
+  abstract makeUrl(word: string): string;
   async getResource(word: string): Promise<void> {
     try {
       const response = await axios({
         method: 'get',
         url: this.makeUrl(word),
         headers: this.requestheader
-      })
-      this.resultBody = response.data
+      });
+      this.resultBody = response.data;
     } catch (error: any) {
-      console.error('Error downloading or converting MP3:', error.message)
-      throw error
+      console.error('Error downloading or converting MP3:', error.message);
+      throw error;
     }
   }
-  abstract getAutoComplete(word: string): Promise<string[]>
+  abstract getAutoComplete(word: string): Promise<string[]>;
 }

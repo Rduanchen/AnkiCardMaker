@@ -1,9 +1,10 @@
 import VocabularyClawerBase, { Meaning } from '../modals/clawer-base';
 import { KK, ExampleSentence, Audio, WordDefination } from '../modals/clawer-base';
+import { voiceDownloadModel } from '../../tools/to-mp3';
 
-let cambridgeBaseUrl = `https://dictionary.cambridge.org/dictionary/english-chinese-traditional/`;
+const cambridgeBaseUrl = `https://dictionary.cambridge.org/dictionary/english-chinese-traditional/`;
 
-class CambridgeClawer extends VocabularyClawerBase {
+export default class CambridgeClawer extends VocabularyClawerBase {
   constructor(searchVol: string, settings: object) {
     super(cambridgeBaseUrl, searchVol, settings);
   }
@@ -12,10 +13,10 @@ class CambridgeClawer extends VocabularyClawerBase {
   }
   getTraslation(): string[][] {
     const translations = this.resultBody('.trans.dtrans.dtrans-se.break-cj');
-    let result: any[] = [];
+    const result: any[] = [];
     for (let i = 0; i < translations.length; i++) {
       const translate = translations.eq(i).find('.dtrans');
-      let transList: any[] = [];
+      const transList: any[] = [];
       for (let j = 0; j < translate.length; j++) {
         transList.push(translate.eq(j).text());
       }
@@ -25,7 +26,7 @@ class CambridgeClawer extends VocabularyClawerBase {
   }
   getDefinition(): string[] {
     const definition = this.resultBody('.ddef_h');
-    let result: any = [];
+    const result: any = [];
     for (let i = 0; i < definition.length; i++) {
       const defs = definition.eq(i).find('.def.ddef_d.db');
       let str = '';
@@ -37,8 +38,8 @@ class CambridgeClawer extends VocabularyClawerBase {
     return result;
   }
   getKK(): KK[] {
-    let kks = this.resultBody('.pos-header.dpos-h').eq(0).find('.pron.dpron');
-    let result: KK[] = [
+    const kks = this.resultBody('.pos-header.dpos-h').eq(0).find('.pron.dpron');
+    const result: KK[] = [
       {
         type: 'uk',
         text: kks.eq(0).text()
@@ -71,10 +72,10 @@ class CambridgeClawer extends VocabularyClawerBase {
     ];
   }
   getExampleSentences(content): ExampleSentence[] {
-    let examples = content.find('.examp.dexamp');
-    let exampleList: ExampleSentence[] = [];
+    const examples = content.find('.examp.dexamp');
+    const exampleList: ExampleSentence[] = [];
     for (let k = 0; k < examples.length; k++) {
-      let sentence = {} as ExampleSentence;
+      const sentence = {} as ExampleSentence;
       sentence.sentence = examples.eq(k).find('.eg.deg').text();
       sentence.translation = examples.eq(k).find('.trans.dtrans.dtrans-se.hdb.break-cj').text();
       exampleList.push(sentence);
@@ -83,7 +84,7 @@ class CambridgeClawer extends VocabularyClawerBase {
   }
   getTypes(): string[] {
     const types = this.resultBody('.posgram.dpos-g.hdib.lmr-5');
-    let result: string[] = [];
+    const result: string[] = [];
     for (let i = 0; i < types.length; i++) {
       let exist = false;
       result.forEach((type) => {
@@ -95,13 +96,13 @@ class CambridgeClawer extends VocabularyClawerBase {
   }
   getEachMeaning(): Meaning[] {
     const volMeans = this.resultBody('.pr.entry-body__el');
-    let sections: Meaning[] = [];
+    const sections: Meaning[] = [];
     for (let i = 0; i < volMeans.length; i++) {
-      let partOfSpeech = volMeans.eq(i).find('.posgram.dpos-g.hdib.lmr-5').text();
-      let sectionsBody = volMeans.eq(i).find('.def-block.ddef_block');
+      const partOfSpeech = volMeans.eq(i).find('.posgram.dpos-g.hdib.lmr-5').text();
+      const sectionsBody = volMeans.eq(i).find('.def-block.ddef_block');
       for (let j = 0; j < sectionsBody.length; j++) {
-        let sectionBody = sectionsBody.eq(j);
-        let sectionData = {} as Meaning;
+        const sectionBody = sectionsBody.eq(j);
+        const sectionData = {} as Meaning;
         sectionData.partOfSpeech = partOfSpeech;
         sectionData.translation = sectionBody.find('.trans.dtrans.dtrans-se.break-cj').eq(0).text();
         sectionData.definition = sectionBody.find('.def.ddef_d.db').text();
@@ -112,7 +113,7 @@ class CambridgeClawer extends VocabularyClawerBase {
     return sections;
   }
   getDictionary(): WordDefination {
-    let cardBasic: WordDefination = {
+    const cardBasic: WordDefination = {
       word: this.searchVol,
       kk: this.getKK(),
       audioURL: this.getAudiosUrl(),
@@ -121,18 +122,18 @@ class CambridgeClawer extends VocabularyClawerBase {
     return this.filterDictionaryObjectWithSettings(cardBasic);
   }
   filterDictionaryObjectWithSettings(cardBasic: WordDefination): WordDefination {
-    let cardBasicFiltered: WordDefination = {
+    const cardBasicFiltered: WordDefination = {
       word: cardBasic.word,
       kk: this.settings['displayKK'] == true ? cardBasic.kk : null,
       audioURL: this.settings['displayAudio'] == true ? cardBasic.audioURL : null,
       meanings: (() => {
-        let displayAmount = countIteratorAmount(
+        const displayAmount = countIteratorAmount(
           this.settings['cardNumber'],
           cardBasic.meanings.length
         );
-        let meaningsFiltered: Meaning[] = [];
+        const meaningsFiltered: Meaning[] = [];
         for (let i = 0; i < displayAmount; i++) {
-          let meaningFiltered: Meaning = {
+          const meaningFiltered: Meaning = {
             partOfSpeech: cardBasic.meanings[i].partOfSpeech,
             translation:
               this.settings['displayTranslation'] == true
@@ -144,13 +145,13 @@ class CambridgeClawer extends VocabularyClawerBase {
               this.settings['displayExample'] == true
                 ? (() => {
                     try {
-                      let displayExampleAmount = countIteratorAmount(
+                      const displayExampleAmount = countIteratorAmount(
                         this.settings['exampleLimit'],
                         cardBasic.meanings[i].example.length
                       );
-                      let examplesFiltered: ExampleSentence[] = [];
+                      const examplesFiltered: ExampleSentence[] = [];
                       for (let j = 0; j < displayExampleAmount; j++) {
-                        let exampleFiltered: ExampleSentence = {
+                        const exampleFiltered: ExampleSentence = {
                           sentence: cardBasic.meanings[i].example[j].sentence,
                           translation:
                             this.settings['displayExampleTranslation'] == false
@@ -172,18 +173,48 @@ class CambridgeClawer extends VocabularyClawerBase {
         return meaningsFiltered;
       })()
     };
-    console.log('轉換完成', cardBasicFiltered);
+    console.log('轉換完成');
     return cardBasicFiltered;
   }
 }
-export default CambridgeClawer;
 
 function countIteratorAmount(settingAmount, originalAmount: number) {
-  let totalDisplay = String(settingAmount);
+  const totalDisplay = String(settingAmount);
   let displayAmount =
     totalDisplay == '' || (isNaN(Number(totalDisplay)) && totalDisplay.trim() == '')
       ? originalAmount
       : Number(totalDisplay);
   displayAmount = displayAmount > originalAmount ? originalAmount : displayAmount;
   return displayAmount;
+}
+
+export function generateVoiceDownloadModal(
+  datas: WordDefination[],
+  settings
+): voiceDownloadModel[] {
+  const downloadlist: voiceDownloadModel[] = [];
+  // let faildownloadlist: string[] = []; //FIXME
+  datas.forEach((item: WordDefination) => {
+    if (settings['audioAccent'] == 'uk') {
+      item.audioURL?.forEach((audio) => {
+        if (audio.name == 'uk') {
+          downloadlist.push({
+            url: audio.url,
+            fileName: item.word
+          } as voiceDownloadModel);
+        }
+      });
+    }
+    if (settings['audioAccent'] == 'us') {
+      item.audioURL?.forEach((audio) => {
+        if (audio.name == 'us') {
+          downloadlist.push({
+            url: audio.url,
+            fileName: item.word
+          } as voiceDownloadModel);
+        }
+      });
+    }
+  });
+  return downloadlist;
 }

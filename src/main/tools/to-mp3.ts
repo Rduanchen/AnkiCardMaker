@@ -1,10 +1,10 @@
-import axios from 'axios'
-import fs from 'fs'
-import path from 'path'
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
 export interface voiceDownloadModel {
-  url: string
-  fileName: string
+  url: string;
+  fileName: string;
 }
 
 export async function downloadMp3Files(urls: voiceDownloadModel[], folderPath: string) {
@@ -22,33 +22,33 @@ export async function downloadMp3Files(urls: voiceDownloadModel[], folderPath: s
           Referer: 'https://www.google.com/',
           Connection: 'keep-alive'
         }
-      })
+      });
 
-      const fileName = `${index + 1}.mp3`
-      const filePath = path.join(folderPath, fileName)
-      const writer = fs.createWriteStream(filePath)
+      const fileName = `${index + 1}.mp3`;
+      const filePath = path.join(folderPath, fileName);
+      const writer = fs.createWriteStream(filePath);
 
-      response.data.pipe(writer)
+      response.data.pipe(writer);
 
       return new Promise<void>((resolve, reject) => {
         writer.on('finish', () => {
           writer.close(() => {
-            console.log(`File ${fileName} finished and closed.`)
-            resolve()
-          })
-        })
+            console.log(`File ${fileName} finished and closed.`);
+            resolve();
+          });
+        });
 
         writer.on('error', (err) => {
-          console.error(`Error writing to ${fileName}:`, err)
-          reject(err)
-        })
-      })
+          console.error(`Error writing to ${fileName}:`, err);
+          reject(err);
+        });
+      });
     } catch (error) {
-      console.error(`Error downloading ${url}:`, error)
+      console.error(`Error downloading ${url}:`, error);
     }
-  })
+  });
 
   // 等待所有下載完成
-  await Promise.all(downloadPromises)
-  console.log('All MP3 files downloaded.')
+  await Promise.all(downloadPromises);
+  console.log('All MP3 files downloaded.');
 }
