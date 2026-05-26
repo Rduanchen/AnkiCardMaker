@@ -1,6 +1,7 @@
 # important
 
-This project has been developing
+# This project is no longer maintained. please check out [this repo](https://github.com/Rduanchen/anki-card-maker)
+# 本專案不再維護 如果想要繼續使用請參考[這個 repo](https://github.com/Rduanchen/anki-card-maker)
 
 # electron-app-vite
 
